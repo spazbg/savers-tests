@@ -1,8 +1,10 @@
-# Savers Tests
+# Savers Test
 
-Savers Tests is a Google Chrome extension that allows users (mainly QAs and DEVs) to easily copy and paste 'acs_ngn' cookies between Savers UAT and PR environments. 
+Savers Test is a Google Chrome extension that allows users (mainly QAs and DEVs) to easily copy and paste 'acs_ngn' cookies between Savers UAT and PR environments. 
 The extension also provides a simple way to clear the 'acs_ngn' cookie. 
 Additionally, it supports importing and applying codes to the Savers app.
+
+![](savers-test.gif)
 
 
 ## Features
