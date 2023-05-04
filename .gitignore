@@ -1,0 +1,17 @@
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore temporary files
+*.tmp
+*.bak
+*.swp
+
+# Ignore node_modules if you use npm packages
+node_modules/
+
+# Ignore any IDE-specific files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
