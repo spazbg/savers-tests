@@ -23,7 +23,8 @@
   ],
   "host_permissions": [
     "*://*.thesun.co.uk/*",
-    "*://*.ntch.co.uk/*"
+    "*://*.ntch.co.uk/*",
+    "*://localhost/*"
   ],
   "icons": {
     "16": "favicon.png",
