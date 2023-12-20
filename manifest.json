@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Savers Test",
-  "version": "1.0",
+  "version": "1.1",
   "author": "Spas Genov",
   "description": "A Google Chrome extension for Savers' QAs and DEVs, enabling easy cookie management and code banking",
   "action": {

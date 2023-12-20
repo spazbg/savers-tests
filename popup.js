@@ -2,6 +2,7 @@
 const copyButton = document.getElementById('copy');
 const pasteButton = document.getElementById('paste');
 const clearButton = document.getElementById('clear');
+const clearStorageButton = document.getElementById('clearStorage');
 
 // Provide visual feedback for button clicks
 function buttonFeedback(button) {
@@ -98,7 +99,34 @@ async function handleClear() {
     }
 }
 
+// Handle storage clearing
+async function handleClearStorage() {
+    try {
+        const [tab] = await chrome.tabs.query({active: true, currentWindow: true});
+
+        // Clear local and session storage
+        chrome.scripting.executeScript({
+            target: {tabId: tab.id},
+            function: () => {
+                localStorage.clear();
+                sessionStorage.clear();
+            }
+        }).then(() => {
+            alert('Storage cleared!');
+            buttonFeedback(clearStorageButton);  
+            chrome.tabs.reload(tab.id);
+        }).catch((error) => {
+            console.error(error);
+            alert('Error while clearing storage:', error.message);
+        });
+    } catch (error) {
+        console.error(error);
+        alert('Error while clearing storage:', error.message);
+    }
+}
+
 // Add event listeners
 copyButton.addEventListener('click', handleCopy);
 pasteButton.addEventListener('click', handlePaste);
 clearButton.addEventListener('click', handleClear);
+clearStorageButton.addEventListener('click', handleClearStorage);
