@@ -1,8 +1,10 @@
-// Get the buttons
+// Get the buttons and input field
 const copyButton = document.getElementById('copy');
 const pasteButton = document.getElementById('paste');
 const clearButton = document.getElementById('clear');
 const clearStorageButton = document.getElementById('clearStorage');
+const importSacsNgnButton = document.getElementById('importSacsNgn');
+const sacsNgnInput = document.getElementById('sacsNgnInput');
 
 // Provide visual feedback for button clicks
 function buttonFeedback(button) {
@@ -80,19 +82,27 @@ async function handleClear() {
         const [tab] = await chrome.tabs.query({active: true, currentWindow: true});
         const url = new URL(tab.url);
 
-        const cookie = await new Promise((resolve) => chrome.cookies.get({url: tab.url, name: 'acs_ngn'}, resolve));
-        if (cookie) {
-            await new Promise((resolve) => chrome.cookies.remove({
-                url: url.protocol + "//" + url.hostname + cookie.path,
-                name: cookie.name
-            }, resolve));
-
-            alert('acs_ngn cookie deleted!');
-            buttonFeedback(clearButton);
-            chrome.tabs.reload(tab.id);
-        } else {
-            alert('acs_ngn cookie not found for this domain!');
+        // Function to remove a cookie by name
+        async function removeCookieByName(name) {
+            const cookie = await new Promise((resolve) => chrome.cookies.get({url: tab.url, name}, resolve));
+            if (cookie) {
+                await new Promise((resolve) => chrome.cookies.remove({
+                    url: url.protocol + "//" + url.hostname + cookie.path,
+                    name: cookie.name
+                }, resolve));
+                console.log(`${name} cookie deleted!`);
+            } else {
+                console.log(`${name} cookie not found for this domain!`);
+            }
         }
+
+        // Remove both acs_ngn and sacs_ngn cookies
+        await removeCookieByName('acs_ngn');
+        await removeCookieByName('sacs_ngn');
+
+        alert('acs_ngn and sacs_ngn cookies deleted!');
+        buttonFeedback(clearButton);
+        chrome.tabs.reload(tab.id);
     } catch (error) {
         console.error(error);
         alert('Error while clearing cookies:', error.message);
@@ -113,7 +123,7 @@ async function handleClearStorage() {
             }
         }).then(() => {
             alert('Storage cleared!');
-            buttonFeedback(clearStorageButton);  
+            buttonFeedback(clearStorageButton);
             chrome.tabs.reload(tab.id);
         }).catch((error) => {
             console.error(error);
@@ -125,8 +135,45 @@ async function handleClearStorage() {
     }
 }
 
+// Handle sacs_ngn cookie import
+async function handleImportSacsNgn() {
+    try {
+        const sacsNgnValue = sacsNgnInput.value.trim();
+        if (!sacsNgnValue) {
+            alert('Please enter a sacs_ngn cookie value.');
+            return;
+        }
+
+        const [tab] = await chrome.tabs.query({active: true, currentWindow: true});
+        const {url} = tab;
+        const newCookie = {
+            url,
+            name: 'sacs_ngn',
+            value: sacsNgnValue,
+            path: '/',
+            secure: true,
+            httpOnly: true,
+        };
+
+        console.log('Attempting to set cookie:', newCookie);
+
+        const cookie = await new Promise((resolve) => chrome.cookies.set(newCookie, resolve));
+        if (cookie) {
+            alert('sacs_ngn cookie imported!');
+            buttonFeedback(importSacsNgnButton);
+            chrome.tabs.reload(tab.id);
+        } else {
+            alert('Failed to import sacs_ngn cookie!');
+        }
+    } catch (error) {
+        console.error('Error while importing sacs_ngn cookie:', error);
+        alert('Error while importing sacs_ngn cookie: ' + error.message);
+    }
+}
+
 // Add event listeners
 copyButton.addEventListener('click', handleCopy);
 pasteButton.addEventListener('click', handlePaste);
 clearButton.addEventListener('click', handleClear);
 clearStorageButton.addEventListener('click', handleClearStorage);
+importSacsNgnButton.addEventListener('click', handleImportSacsNgn);

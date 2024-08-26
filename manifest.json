@@ -9,11 +9,11 @@
     "default_popup": "popup.html"
   },
   "content_scripts": [
-  {
-    "matches": ["*://*/*"],
-    "js": ["cookies.js"]
-  }
-],
+    {
+      "matches": ["*://*/*"],
+      "js": ["cookies.js"]
+    }
+  ],
   "permissions": [
     "activeTab",
     "cookies",
@@ -23,6 +23,7 @@
   ],
   "host_permissions": [
     "*://*.thesun.co.uk/*",
+    "*://*.uat-thesun.co.uk/*",
     "*://*.ntch.co.uk/*",
     "*://localhost/*"
   ],
