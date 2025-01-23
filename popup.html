@@ -51,6 +51,19 @@
             margin-bottom: 5px;
         }
 
+        .env-check {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .env-check label {
+            display: inline-block;
+            margin: 5px 10px 5px 0;
+            white-space: nowrap;
+        }
     </style>
 </head>
 <body>
@@ -69,6 +82,13 @@
 <input id="sacsNgnInput" type="text">
 <br>
 <button id="importSacsNgn">Import sacs_ngn</button>
+<hr>
+<div class="env-check">
+    <label><input type="checkbox" class="env-checkbox" data-url="https://main-graphql.newsapis.co.uk/graphql"> Prod</label>
+    <label><input type="checkbox" class="env-checkbox" data-url="https://main-graphql.dev.newsapis.co.uk/graphql"> UAT</label>
+    <label><input type="checkbox" class="env-checkbox" data-url="https://main-graphql.staging.newsapis.co.uk/graphql"> Staging</label>
+</div>
+<button id="checkEntitlement">Check Entitlement</button>
 <script src="popup.js"></script>
 <script src="codes.js"></script>
 </body>

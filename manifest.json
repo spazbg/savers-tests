@@ -22,8 +22,10 @@
     "scripting"
   ],
   "host_permissions": [
+    "*://*.newsapis.co.uk/*",
     "*://*.thesun.co.uk/*",
     "*://*.uat-thesun.co.uk/*",
+    "*://*.staging-thesun.co.uk/*",
     "*://*.ntch.co.uk/*",
     "*://localhost/*"
   ],
